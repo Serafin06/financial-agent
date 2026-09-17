@@ -15,28 +15,34 @@ def check_local_reports(ticker, start_year, end_year):
         print(f"Brak katalogu {directory}.")
         return
 
-    available_years = set()
+    available_quarters = set()
     for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith(".pdf"):
-                year = int(file.split('_')[0])
-                available_years.add(year)
+                quarter = file.split('_')[0]
+                available_quarters.add(quarter)
 
-    missing_years = [year for year in range(start_year, end_year + 1) if year not in available_years]
+    missing_quarters = []
+    for year in range(start_year, end_year + 1):
+        for quarter in ["Q1", "Q2", "Q3", "Q4"]:
+            if f"{quarter}_{year}" not in available_quarters:
+                missing_quarters.append(f"{quarter}_{year}")
 
-    print(f"Dostępne lata: {sorted(available_years)}")
-    print(f"Brakujące lata: {sorted(missing_years)}")
+    print(f"Dostępne kwartały: {sorted(available_quarters)}")
+    print(f"Brakujące kwartały: {sorted(missing_quarters)}")
 
 def download_reports(ticker, start_year, end_year):
     # Placeholder dla funkcji pobierającej raporty PDF
     print(f"Pobieranie raportów dla {ticker} z lat {start_year} do {end_year}...")
     
     for year in range(start_year, end_year + 1):
-        if not os.path.exists(f"data/{ticker}/{year}.pdf"):
-            print(f"Pobieranie raportu za rok {year}...")
-            # Tutaj powinien być kod pobierający raporty z odpowiednich stron
-        else:
-            print(f"Raport za rok {year} już istnieje.")
+        for quarter in ["Q1", "Q2", "Q3", "Q4"]:
+            file_name = f"{quarter}_{year}.pdf"
+            if not os.path.exists(f"data/{ticker}/{file_name}"):
+                print(f"Pobieranie raportu za {quarter} {year}...")
+                # Tutaj powinien być kod pobierający raporty z odpowiednich stron
+            else:
+                print(f"Raport za {quarter} {year} już istnieje.")
 
 def main():
     parser = argparse.ArgumentParser(description="Downloader for financial reports.")
