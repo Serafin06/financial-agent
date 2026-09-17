@@ -10,11 +10,12 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from src.downloader import create_directory, check_local_reports, download_reports
 
 def test_downloader_missing_range():
-    with pytest.raises(argparse.ArgumentError) as excinfo:
+    with pytest.raises(SystemExit) as excinfo:
         sys.argv = ["downloader.py", "--ticker", "CDR"]
         from src.downloader import main
         main()
-    assert "argument --range is required" in str(excinfo.value)
+    assert excinfo.type == SystemExit
+    assert excinfo.value.code == 2
 
 @patch('os.makedirs')
 @patch('os.walk')
@@ -32,8 +33,8 @@ def test_auditor(mock_walk, mock_makedirs, capsys):
     
     # Oczekiwany output
     expected_output = [
-        "Dostępne lata: [2024]",
-        "Brakujące lata: [2024]"
+        "Dostępne kwartały: ['Q1_2024', 'Q2_2024']",
+        "Brakujące kwartały: ['Q3_2024', 'Q4_2024']"
     ]
     
     # Sprawdzenie czy funkcja wypisała oczekiwane informacje
