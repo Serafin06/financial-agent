@@ -1,6 +1,7 @@
 import os
 import sys
-from datetime import datetime, timedelta
+import argparse
+from datetime import datetime
 
 def create_directory(ticker):
     directory = f"data/{ticker}"
@@ -8,30 +9,48 @@ def create_directory(ticker):
         os.makedirs(directory)
     return directory
 
-def download_reports(ticker, years=None):
-    # Placeholder dla funkcji pobierającej raporty PDF
-    print(f"Pobieranie raportów dla {ticker}...")
-    
-    if years:
-        start_year, end_year = map(int, years.split('-'))
-        for year in range(start_year, end_year + 1):
-            print(f"Pobieranie raportu za rok {year}...")
-            # Tutaj powinien być kod pobierający raporty z odpowiednich stron
-    else:
-        print("Pobieranie najnowszego dostępnego raportu...")
-        # Tutaj powinien być kod pobierający najnowszy dostępny raport
-
-def main():
-    if len(sys.argv) < 2 or sys.argv[1] in ["-h", "--help"]:
-        print("Użycie: python downloader.py <ticker> [years]")
-        print("Przykład: python downloader.py CDR 2024-2025")
+def check_local_reports(ticker, start_year, end_year):
+    directory = f"data/{ticker}/"
+    if not os.path.exists(directory):
+        print(f"Brak katalogu {directory}.")
         return
 
-    ticker = sys.argv[1]
-    years = sys.argv[2] if len(sys.argv) > 2 else None
+    available_years = set()
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".pdf"):
+                year = int(file.split('_')[0])
+                available_years.add(year)
+
+    missing_years = [year for year in range(start_year, end_year + 1) if year not in available_years]
+
+    print(f"Dostępne lata: {sorted(available_years)}")
+    print(f"Brakujące lata: {sorted(missing_years)}")
+
+def download_reports(ticker, start_year, end_year):
+    # Placeholder dla funkcji pobierającej raporty PDF
+    print(f"Pobieranie raportów dla {ticker} z lat {start_year} do {end_year}...")
+    
+    for year in range(start_year, end_year + 1):
+        if not os.path.exists(f"data/{ticker}/{year}.pdf"):
+            print(f"Pobieranie raportu za rok {year}...")
+            # Tutaj powinien być kod pobierający raporty z odpowiednich stron
+        else:
+            print(f"Raport za rok {year} już istnieje.")
+
+def main():
+    parser = argparse.ArgumentParser(description="Downloader for financial reports.")
+    parser.add_argument("--ticker", required=True, help="Ticker of the company (e.g., CDR)")
+    parser.add_argument("--range", required=True, help="Range of years to download (e.g., 2023-2025)")
+
+    args = parser.parse_args()
+
+    ticker = args.ticker
+    start_year, end_year = map(int, args.range.split('-'))
 
     directory = create_directory(ticker)
-    download_reports(ticker, years)
+    check_local_reports(ticker, start_year, end_year)
+    download_reports(ticker, start_year, end_year)
 
 if __name__ == "__main__":
     main()
