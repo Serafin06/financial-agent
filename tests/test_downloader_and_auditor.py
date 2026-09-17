@@ -17,9 +17,10 @@ def test_downloader_missing_range():
     assert excinfo.type == SystemExit
     assert excinfo.value.code == 2
 
+@patch('os.path.exists', return_value=True)
 @patch('os.makedirs')
 @patch('os.walk')
-def test_auditor(mock_walk, mock_makedirs, capsys):
+def test_auditor(mock_walk, mock_makedirs, mock_exists, capsys):
     # Mockowanie struktury folderów
     mock_walk.return_value = [
         ("data/CDR", [], ["Q1_2024.pdf", "Q2_2024.pdf"])

@@ -19,7 +19,7 @@ def check_local_reports(ticker, start_year, end_year):
     for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith(".pdf"):
-                quarter = file.split('_')[0]
+                quarter = file.split('.')[0]
                 available_quarters.add(quarter)
 
     missing_quarters = []
