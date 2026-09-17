@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from pdf_parser import pdf_to_markdown
 from ollama_client import query_qwen
 from db import MongoDBHandler
+from downloader import download_reports
 
 def main():
     # Wyznaczenie ścieżki głównej projektu (parent dir dla src)
@@ -19,6 +20,9 @@ def main():
         return
 
     db_handler = MongoDBHandler()
+
+    # Dodanie opcji pobierania raportów przed analizą
+    download_reports(data_dir)
 
     with open(prompt_path, "r", encoding="utf-8") as f:
         system_prompt = f.read()
