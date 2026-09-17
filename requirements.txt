@@ -4,3 +4,4 @@ pymupdf4llm
 requests
 beautifulsoup4
 python-dotenv
+pytest
