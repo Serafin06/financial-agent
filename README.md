@@ -1,51 +1,42 @@
-# Project Overview
+Autonomiczny agent lokalny oparty na modelu **Qwen 2.5 (14B)** do ekstrakcji, analizy, walidacji i wizualizacji sprawozdań finansowych spółek z GPW.
 
-This project is a simple application built with Python and Flask. It provides a basic web interface for users to interact with the application.
+## 🏗️ Architektura Systemu (Multi-Language)
+- 🐍 **Python**: Korpus aplikacji, konwersja PDF (pymupdf4llm), Ollama API, połączenie z MongoDB, skrobanie Biznesradar.
+- 🦀 **Rust**: Przyszły silnik obliczeniowy do szybkiego liczenia wskaźników finansowych (ROE, DCF, Altman Z-Score).
+- 🪟 **Kotlin**: Przyszły serwer REST API pod aplikację webową.
 
-## Getting Started
+## 📌 Obecny Stan Projektu (Status)
+- [x] Docker z bazą MongoDB oraz Mongo Express (`http://localhost:8081`).
+- [x] Środowisko Python (`venv`) i skrypt `src/main.py`.
+- [x] Klient Ollama łączący się z `qwen2.5-coder:14b`.
+- [x] Zewnętrzny prompt w `prompts/pdf_to_json.md`.
+- [ ] **NASTĘPNY KROK:** Pierwszy test na surowym pliku PDF w `data/` i sprawdzenie zapisu w MongoDB.
+- [ ] Walidacja danych z serwisem Biznesradar (`src/biznesradar_checker.py`).
 
-To get started with the project, follow these steps:
+## 🚀 Uruchomienie lokalne
+```bash
+docker compose up -d
+source venv/bin/activate
+python src/main.py
+```
 
-1. Clone the repository.
-2. Install dependencies using pip:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Run the application:
-   ```
-   python app.py
-   ```
+Autonomiczny agent lokalny wykorzystujący model **Qwen 2.5 (14B)** do ekstrakcji, analizy, walidacji i wizualizacji sprawozdań finansowych spółek z GPW.
 
-## Project Structure
+## 🚀 Przykłady Użycia z Basha
 
-The project is structured as follows:
+1. **Sprawdzenie aktualności pobranych raportów (Audyt):**
+   ```bash
+   python src/auditor.py
+2. Pobranie brakujących raportów (wymagany ticker i zakres dat):
 
-- `app.py`: The main entry point of the application.
-- `requirements.txt`: Contains the list of dependencies required to run the application.
-- `templates/`: Contains HTML templates for the web interface.
-- `static/`: Contains static files such as CSS and JavaScript.
-- `README.md`: This file.
+```bash
+python src/downloader.py --ticker CDR --range 2023-2025
+```
+3. Uruchomienie analizy AI na wczytanych plikach PDF:
 
-## Contributing
-
-Contributions are welcome! Please follow these guidelines when contributing to the project:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix:
-   ```
-   git checkout -b my-feature
-   ```
-3. Make your changes.
-4. Commit your changes with descriptive commit messages:
-   ```
-   git commit -m "Add new feature"
-   ```
-5. Push your changes to your fork:
-   ```
-   git push origin my-feature
-   ```
-6. Submit a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
+```bash
+python src/main.py
+```
+📁 Podgląd Bazy Danych
+Dostępny w przeglądarce pod adresem: http://localhost:8081 (Login: admin / pass).
+EOF
