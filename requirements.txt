@@ -1,0 +1,5 @@
+pymongo
+ollama
+pymupdf4llm
+requests
+python-dotenv
