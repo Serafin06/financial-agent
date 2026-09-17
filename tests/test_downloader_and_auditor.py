@@ -12,12 +12,13 @@ from src.downloader import create_directory, check_local_reports, download_repor
 def test_downloader_missing_range():
     with pytest.raises(argparse.ArgumentError) as excinfo:
         sys.argv = ["downloader.py", "--ticker", "CDR"]
+        from src.downloader import main
         main()
     assert "argument --range is required" in str(excinfo.value)
 
 @patch('os.makedirs')
 @patch('os.walk')
-def test_auditor(mock_walk, mock_makedirs):
+def test_auditor(mock_walk, mock_makedirs, capsys):
     # Mockowanie struktury folderów
     mock_walk.return_value = [
         ("data/CDR", [], ["Q1_2024.pdf", "Q2_2024.pdf"])
