@@ -1,22 +1,29 @@
 # Project Overview
 
-This is a brief overview of the project. The purpose of this document is to provide information about the project's structure, setup, and usage.
+This project is a simple application built with Python and Flask. It provides a basic web interface for users to interact with the application.
 
 ## Getting Started
 
 To get started with the project, follow these steps:
 
 1. Clone the repository.
-2. Install dependencies.
-3. Run the application.
+2. Install dependencies using pip:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Run the application:
+   ```
+   python app.py
+   ```
 
 ## Project Structure
 
 The project is structured as follows:
 
-- `src/`: Contains the source code of the application.
-- `tests/`: Contains the test files for the application.
-- `docs/`: Contains documentation and additional resources.
+- `app.py`: The main entry point of the application.
+- `requirements.txt`: Contains the list of dependencies required to run the application.
+- `templates/`: Contains HTML templates for the web interface.
+- `static/`: Contains static files such as CSS and JavaScript.
 - `README.md`: This file.
 
 ## Contributing
@@ -24,10 +31,19 @@ The project is structured as follows:
 Contributions are welcome! Please follow these guidelines when contributing to the project:
 
 1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
+2. Create a new branch for your feature or bug fix:
+   ```
+   git checkout -b my-feature
+   ```
 3. Make your changes.
-4. Commit your changes with descriptive commit messages.
-5. Push your changes to your fork.
+4. Commit your changes with descriptive commit messages:
+   ```
+   git commit -m "Add new feature"
+   ```
+5. Push your changes to your fork:
+   ```
+   git push origin my-feature
+   ```
 6. Submit a pull request.
 
 ## License
